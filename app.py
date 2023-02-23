@@ -59,7 +59,7 @@ def precipitation():
     year_ago = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=365)
     
     # Query the last 12 months of precipitation data
-    last_12_months = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= year_ago).all()
+    results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= year_ago).all()
 
     # Convert list of tuples into normal list
     prcp_data = {date: prcp for date, prcp in results}
@@ -72,13 +72,14 @@ def precipitation():
 @app.route("/api/v1.0/stations")
 def stations():
     # Query all stations
-    results = session.query(stations.station).all()
-
+    results = session.query(Station.station).all()
+    print("test")
+    print(results)
     # Convert list of tuples into normal list
-    stations = list(np.ravel(results))
+    Stations = list(np.ravel(results))
 
     # Return the list as a JSON object
-    return jsonify(stations)
+    return jsonify(Stations)
 
 @app.route("/api/v1.0/tobs")
 def tobs():
@@ -134,5 +135,5 @@ def stats(start=None, end=None):
 
 
 
-#if __name__ == '__main__':
-    #app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
